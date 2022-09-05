@@ -7,9 +7,12 @@ const mongoose = require('mongoose');
 const Schema = require('./Schema')
 
 const server = express();
+server.use(express.json());
 server.use(cors());
 
-mongoose.connect('mongodb://localhost:27017/Books', {useNewUrlParser: true, useUnifiedTopology: true});
+//mongoose.connect('mongodb://localhost:27017/Books', {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect('mongodb://asadsBD:001100@ac-jh4h4ir-shard-00-00.rketq1h.mongodb.net:27017,ac-jh4h4ir-shard-00-01.rketq1h.mongodb.net:27017,ac-jh4h4ir-shard-00-02.rketq1h.mongodb.net:27017/?ssl=true&replicaSet=atlas-aekloa-shard-0&authSource=admin&retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true});
+
 const PORT = process.env.PORT || 3001;
 
 const book = mongoose.model ('books', Schema)
@@ -48,10 +51,57 @@ function booksHandler(req,res){
     }
     else 
     {
-      res.send(result)
+      res.status(200).json(result)
     }
   })
 }
+server.post('/books',addBookHandler);
+
+async function addBookHandler(req,res) {
+  console.log(req.body);
+
+  const {title,description,status} = req.body; 
+  await book.create({
+      title : title,
+      description : description,
+      status : status
+  });
+
+  book.find({},(err,result)=>{
+      if(err)
+      {
+          console.log(err);
+      }
+      else
+      {
+          // console.log(result);
+          res.status(200).json(result);
+      }
+  })
+}
+
+server.delete('/books/:id',deleteBookHandler);
+
+function deleteBookHandler(req,res) {
+  const bookId = req.params.id;
+  book.deleteOne({_id:bookId},(err,result)=>{
+      
+      book.find({},(err,result)=>{
+          if(err)
+          {
+              console.log(err);
+          }
+          else
+          {
+              // console.log(result);
+              res.status(200).send(result);
+          }
+      })
+
+  })
+  
+}
+
 
 server.get('/test', (request, response) => {
 
@@ -62,7 +112,7 @@ server.get('/test', (request, response) => {
 server.get('*', errorHandler)
 
 function errorHandler(req,res){
-  res.send('404 PAGE NOT FOUND!') 
+  res.status(404).send('404 PAGE NOT FOUND!') 
 }
 
 server.listen(PORT, () => console.log(`listening on ${PORT}`));
