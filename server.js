@@ -101,8 +101,33 @@ function deleteBookHandler(req,res) {
   })
   
 }
+server.put('/books/:id',updateBookHandler);
 
+function updateBookHandler (req,res) {
+  const id = req.params.id;
+  const {title,description,status} = req.body; //Destructuring assignment
+  console.log(req.body);
+  book.findByIdAndUpdate(id,{title,description,status},(err,result)=>{
+      if(err) {
+          console.log(err);
+      }
+      else {
+          book.find({},(err,result)=>{
+              if(err)
+              {
+                  console.log(err);
+              }
+              else
+              {
+                  // console.log(result);
+                  res.send(result);
+              }
+          })
+      }
+  })
+}
 
+//http://localhost:3001/    ==> my local host
 server.get('/test', (request, response) => {
 
   response.send('test request received')
