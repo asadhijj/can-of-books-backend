@@ -2,17 +2,17 @@
 
 **Author**: Asad Hijawi
 
-**Version**: 2.0.0 
+**Version**: 3.0.0 
 
 ## Overview
- a react front end for a server connected with mongoose was done to render the books added to the database also the users should be able to add their books and and delete them ! 
+ a react front end for a server connected with mongoose was done to render the books added to the database also the users should be able to add their books and and delete them ! --- > recently added the update button where the user can update the books data (title, description, status)
 
 ## Getting Started
 1. making a server
 2. connecting the server to mongoose 
 3. adding data to the server 
 4. rendering the data using react
-5. using POST and DELETE to add and delete books
+5. using POST,DELETE and PUT to add and delete books and update books
 6. deploying the server on Heroku
 7. deploying react app on netlify
 
@@ -36,12 +36,11 @@ technologies and languages use :
 ## Estimates
 Name of feature: Book can
 
-Estimate of time needed to complete: 7 hours
+Estimate of time needed to complete: 1 hour
 
 Start time: 7 pm
 
-Finish time: 1 am
+Finish time: 9 pm
 
-Actual time needed to complete: 6 hours
-
+Actual time needed to complete: 2 hours
 
