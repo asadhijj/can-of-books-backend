@@ -49,7 +49,7 @@ server.get('/books', booksHandler)
 
 function booksHandler(req,res){
   const userName = req.query.userName
-  book.find({userName},(err,result) =>{
+  book.find({userName:userName},(err,result) =>{
     if(err){
       console.log(err)
     }
