@@ -21,18 +21,21 @@ async function seedData () {
   const firstBook  = new book ({
     title : "The Virtues of Happiness: A Theory of the Good Life ",
     description : "This book explains why it is bad to be bad and good to be good, and what happens to people's values as their practical rationality develops.",
-    status : "Available"
+    status : "Available",
+    userName : "User"
   })
 
   const secondBook = new book ({
     title : "Beyond Good & Evil: Prelude to a Philosophy of the Future",
     description : "In nine parts the book is designed to give the reader a comprehensive idea of Nietzsche's thought and style:  they span The 'Prejudices of Philsophers', The Free Spirit, religion, morals, scholarship, 'Our Virtues' ,'Peoples and Fatherlands' and 'What Is Noble,' as well as epigrams and a concluding poem. ",
     status : "Available",
+    userName : "User"
     })
     const thirdBook = new book ({
       title : "The Sailor Who Fell from Grace with the Sea", 
       description : "Thirteen-year-old Noboru is a member of a gang of highly philosophical teenage boys who reject the tenets of the adult world — to them, adult life is illusory, hypocritical, and sentimental. When Noboru’s widowed mother is romanced by Ryuji, a sailor, Noboru is thrilled. He idolizes this rugged man of the sea as a hero. But his admiration soon turns to hatred, as Ryuji forsakes life onboard the ship for marriage, rejecting everything Noboru holds sacred. Upset and appalled, he and his friends respond to this apparent betrayal with a terrible ferocity.",
       status : "Available",
+      userName : "User"
     })
 
     await firstBook.save()
@@ -45,7 +48,8 @@ async function seedData () {
 server.get('/books', booksHandler)
 
 function booksHandler(req,res){
-  book.find({},(err,result) =>{
+  const userName = req.query.userName
+  book.find({userName:userName},(err,result) =>{
     if(err){
       console.log(err)
     }
@@ -60,14 +64,15 @@ server.post('/books',addBookHandler);
 async function addBookHandler(req,res) {
   console.log(req.body);
 
-  const {title,description,status} = req.body; 
+  const {title,description,status,userName} = req.body; 
   await book.create({
       title : title,
       description : description,
-      status : status
+      status : status,
+      userName:userName
   });
 
-  book.find({},(err,result)=>{
+  book.find({userName:userName},(err,result)=>{
       if(err)
       {
           console.log(err);
@@ -84,9 +89,10 @@ server.delete('/books/:id',deleteBookHandler);
 
 function deleteBookHandler(req,res) {
   const bookId = req.params.id;
+  const userName = req.query.userName
   book.deleteOne({_id:bookId},(err,result)=>{
       
-      book.find({},(err,result)=>{
+      book.find({userName:userName},(err,result)=>{
           if(err)
           {
               console.log(err);
@@ -105,9 +111,9 @@ server.put('/books/:id',updateBookHandler);
 
 function updateBookHandler (req,res) {
   const id = req.params.id;
-  const {title,description,status} = req.body; //Destructuring assignment
+  const {title,description,status,userName} = req.body; //Destructuring assignment
   console.log(req.body);
-  book.findByIdAndUpdate(id,{title,description,status},(err,result)=>{
+  book.findByIdAndUpdate(id,{title,description,status,userName},(err,result)=>{
       if(err) {
           console.log(err);
       }
