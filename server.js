@@ -49,7 +49,7 @@ server.get('/books', booksHandler)
 
 function booksHandler(req,res){
   const userName = req.query.userName
-  book.find({userName:userName},(err,result) =>{
+  book.find({userName},(err,result) =>{
     if(err){
       console.log(err)
     }
@@ -72,7 +72,7 @@ async function addBookHandler(req,res) {
       userName:userName
   });
 
-  book.find({userName:userName},(err,result)=>{
+  book.find({userName},(err,result)=>{
       if(err)
       {
           console.log(err);
@@ -92,7 +92,7 @@ function deleteBookHandler(req,res) {
   const userName = req.query.userName
   book.deleteOne({_id:bookId},(err,result)=>{
       
-      book.find({userName:userName},(err,result)=>{
+      book.find({userName},(err,result)=>{
           if(err)
           {
               console.log(err);
@@ -118,7 +118,7 @@ function updateBookHandler (req,res) {
           console.log(err);
       }
       else {
-          book.find({},(err,result)=>{
+          book.find({userName},(err,result)=>{
               if(err)
               {
                   console.log(err);
